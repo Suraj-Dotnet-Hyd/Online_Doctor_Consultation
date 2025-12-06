@@ -1,0 +1,6 @@
+@DoctorSlots_MicroServices_HostAddress = http://localhost:5171
+
+GET {{DoctorSlots_MicroServices_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

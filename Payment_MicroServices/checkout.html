@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+
+    <button onclick="payNow()">Pay Now</button>
+
+    <script>
+async function payNow() {
+    // 1) Call your API to create order
+    const res = await fetch("http://localhost:5138/api/payment/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            patientId: 1,
+            doctorId: 4,
+            amountInRupees: 500,
+            payerName: "Test User",
+            payerEmail: "test@demo.com",
+            payerPhone: "9999999999",
+            notes: "Check payment"
+        })
+    });
+
+    const data = await res.json();
+
+    // 2) Configure checkout
+    var options = {
+        key: data.razorpayKey,
+        amount: data.amountInPaise,
+        currency: "INR",
+        name: "Doctor Consultation",
+        description: "Payment",
+        order_id: data.orderId,
+        handler: async function (response) {
+            // 3) Verify payment
+            await fetch("http://localhost:5138/api/payment/verify", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    paymentId: data.paymentId,
+                    razorpayPaymentId: response.razorpay_payment_id,
+                    razorpayOrderId: response.razorpay_order_id,
+                    razorpaySignature: response.razorpay_signature
+                })
+            });
+            alert("Payment Successful!");
+        }
+    };
+
+    var rzp = new Razorpay(options);
+    rzp.open();
+}
+    </script>
+
+</body>
+</html>

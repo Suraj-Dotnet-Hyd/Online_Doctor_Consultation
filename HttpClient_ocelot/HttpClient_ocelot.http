@@ -1,0 +1,6 @@
+@HttpClient_ocelot_HostAddress = http://localhost:5259
+
+GET {{HttpClient_ocelot_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

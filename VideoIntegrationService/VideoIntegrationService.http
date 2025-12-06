@@ -1,0 +1,6 @@
+@VideoIntegrationService_HostAddress = http://localhost:5065
+
+GET {{VideoIntegrationService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
