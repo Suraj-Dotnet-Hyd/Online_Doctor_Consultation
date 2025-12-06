@@ -31,7 +31,6 @@ builder.Services.AddCors(options =>
               .AllowCredentials());
 });
 
-app.UseCors("NetlifyCors");
 
 
 builder.Services.AddCors(options =>
@@ -95,6 +94,7 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseCors(MyAllowSpecificOrigins);
+app.UseCors("NetlifyCors");
 
 app.UseAuthentication();
 app.UseAuthorization();
