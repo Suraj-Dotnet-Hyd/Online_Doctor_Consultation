@@ -15,6 +15,25 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(int.Parse(port));
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("NetlifyCors", policy =>
+        policy.WithOrigins("https://your-frontend.netlify.app")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials());
+});
+
+app.UseCors("NetlifyCors");
+
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
